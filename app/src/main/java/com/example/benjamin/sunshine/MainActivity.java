@@ -30,25 +30,6 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
-        ArrayAdapter<String> adArrayAdapter;
-        String[]sForeCastArray = {
-                "Today - Sunny - 88 / 63",
-                "Tommorow - Sunny - 88 / 63",
-                "Weds - Sunny - 88 / 63",
-                "Thurs - Froggy - 88 / 63",
-                "Fri - Rainy - 88 / 63",
-                "Sat - Sunny - 88 / 63",
-                "Sun - Sunny - 88 / 63"};
-
-        List<String> sWeather = new ArrayList<String>(Arrays.asList(sForeCastArray));
-
-        adArrayAdapter = new ArrayAdapter<String>(this,R.layout.list_item_forecast,R.id.list_item_forecast_textview,sWeather);
-        ListView lView = (ListView) findViewById(R.id.listViewForeCast);
-        lView.setAdapter(adArrayAdapter);
-
-
-
-
         return true;
     }
 
