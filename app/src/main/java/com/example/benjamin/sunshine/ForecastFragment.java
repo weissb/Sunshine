@@ -36,8 +36,9 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
-    ArrayAdapter<String> adArrayAdapter;
+
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+    public ArrayAdapter<String> adArrayAdapter;
 
     public ForecastFragment() {
     }
@@ -55,6 +56,7 @@ public class ForecastFragment extends Fragment {
         inflater.inflate(R.menu.forecastfragment,menu);
 
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -78,7 +80,7 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        ArrayAdapter<String> adArrayAdapter;
+
         String[] sForeCastArray = {
                 "Today - Sunny - 88 / 63",
                 "Tommorow - Sunny - 88 / 63",
@@ -90,6 +92,8 @@ public class ForecastFragment extends Fragment {
 
         List<String> sWeather = new ArrayList<String>(Arrays.asList(sForeCastArray));
 
+       // FetchWeatherTask fetchWeather = new FetchWeatherTask();
+        //fetchWeather.execute("90491,de");
         adArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, sWeather);
         ListView lView = (ListView) rootView.findViewById(R.id.listViewForeCast);
         lView.setAdapter(adArrayAdapter);
@@ -218,7 +222,7 @@ public class ForecastFragment extends Fragment {
             // Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
             String format = "json";
-            String units = "metrics";
+            String units = "metric";
             int numDays = 7;
             try {
                 // Construct the URL for the OpenWeatherMap query
@@ -292,8 +296,8 @@ public class ForecastFragment extends Fragment {
                 }
 
 
-                Log.v(LOG_TAG,"Forecast Json Test: "+ forecastJsonStr);
-                Log.v(LOG_TAG,"Forecast Url Test: "+ url);
+                //Log.v(LOG_TAG,"Forecast Json Test: "+ forecastJsonStr);
+                //Log.v(LOG_TAG,"Forecast Url Test: "+ url);
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
@@ -314,6 +318,19 @@ public class ForecastFragment extends Fragment {
             }
             return forecastData;
         }
+
+            @Override
+        protected void onPostExecute(String[] result)
+            {
+                if(result !=null)
+                {
+                    adArrayAdapter.clear();
+                }
+                for(String dayForecast : result)
+                {
+                    adArrayAdapter.add(dayForecast);
+                }
+            }
 
 
     }
