@@ -1,5 +1,7 @@
 package com.example.benjamin.sunshine;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,8 +14,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,7 +82,7 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        ArrayAdapter<String> adArrayAdapter;
+
         String[] sForeCastArray = {
                 "Today - Sunny - 88 / 63",
                 "Tommorow - Sunny - 88 / 63",
@@ -92,6 +96,26 @@ public class ForecastFragment extends Fragment {
 
         adArrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, sWeather);
         ListView lView = (ListView) rootView.findViewById(R.id.listViewForeCast);
+        lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Context context = getActivity().getApplicationContext();
+
+                /*not used anymore
+                CharSequence text = adArrayAdapter.getItem(position);
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show(); */
+
+                //create explizit intent for details
+                String forecast = adArrayAdapter.getItem(position);
+                Intent detailIntent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, position);
+
+                context.startService(detailIntent);
+
+            }
+        });
         lView.setAdapter(adArrayAdapter);
 
         // return inflater.inflate(R.layout.fragment_main, container, false);
